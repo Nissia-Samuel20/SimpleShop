@@ -19,7 +19,7 @@ export interface ProductResponse {
 
 const API_URL = 'https://dummyjson.com/products';
 
-// Mock products - used as fallback when network unavailable
+
 const MOCK_PRODUCTS: Product[] = [
   {
     id: 1,
@@ -123,8 +123,7 @@ const MOCK_PRODUCTS: Product[] = [
   },
 ];
 
-// Fallback HTTP URL for network issues
-const FALLBACK_API_URL = 'https://api.example.com/products'; // Can be replaced with another public API
+const FALLBACK_API_URL = 'https://api.example.com/products'; 
 
 export const productService = {
   async getAllProducts(): Promise<Product[]> {
@@ -148,11 +147,11 @@ export const productService = {
       }
       
       const data: ProductResponse = await response.json();
-      console.log('✅ Fetched', data.products?.length || 0, 'products from API');
+      console.log('Fetched', data.products?.length || 0, 'products from API');
       return data.products || [];
     } catch (error) {
-      console.warn('⚠️ Network error, using mock data:', error);
-      // Return mock data as fallback
+      console.warn('Network error, using mock data:', error);
+      
       return MOCK_PRODUCTS;
     }
   },
@@ -160,7 +159,7 @@ export const productService = {
   async searchProducts(query: string): Promise<Product[]> {
     try {
       const url = `${API_URL}/search?q=${query}`;
-      console.log('🔍 Searching:', url);
+      console.log(' Searching:', url);
       
       const response = await fetch(url, {
         method: 'GET',
@@ -178,7 +177,7 @@ export const productService = {
       return data.products || [];
     } catch (error) {
       console.warn('Search error, searching mock data:', error);
-      // Search in mock data as fallback
+      
       return MOCK_PRODUCTS.filter(product =>
         product.title.toLowerCase().includes(query.toLowerCase()) ||
         product.description.toLowerCase().includes(query.toLowerCase())
@@ -189,7 +188,7 @@ export const productService = {
   async getProductById(id: number): Promise<Product> {
     try {
       const url = `${API_URL}/${id}`;
-      console.log('📦 Fetching product:', url);
+      console.log('Fetching product:', url);
       
       const response = await fetch(url, {
         method: 'GET',
@@ -206,7 +205,7 @@ export const productService = {
       return await response.json();
     } catch (error) {
       console.warn('Product fetch error, using mock data:', error);
-      // Find in mock data as fallback
+      
       const product = MOCK_PRODUCTS.find(p => p.id === id);
       if (product) return product;
       throw new Error('Product not found');
